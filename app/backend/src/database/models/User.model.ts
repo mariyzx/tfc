@@ -1,24 +1,22 @@
-import { Pool } from 'mysql2/promise';
+import { DataTypes, Model } from 'sequelize';
+import db from '.';
 
-interface User {
-  id: number,
-  username: string,
-  role: string,
-  email: string,
-  password: string,
+class UserModel extends Model {
+  declare id: number;
+  declare username: string;
+  declare role: string;
+  declare email: string;
+  declare password: string;
 }
 
-export default class UserModel {
-  public connection: Pool;
-
-  constructor(connection: Pool) {
-    this.connection = connection;
-  }
-
-  public async getAll(): Promise<User[]> {
-    const result = await this.connection
-      .execute('SELECT * FROM users');
-    const [rows] = result;
-    return rows as User[];
-  }
-}
+UserModel.init({
+  id: DataTypes.INTEGER,
+  username: DataTypes.STRING,
+  role: DataTypes.STRING,
+  password: DataTypes.STRING,
+}, {
+  sequelize: db,
+  underscored: true,
+  modelName: 'users',
+  timestamps: false,
+});
