@@ -19,7 +19,7 @@ export default class LoginController {
       const user = await this.loginService.validate(authorization);
       // se não existir retorna erro
       if (!user) return res.status(401).json({ message: 'Invalid token' });
-      // se existir retorna o usuário
+      // se existir retorna o usuário;
       return res.status(200).json(user);
     } catch (err) {
       return undefined;
