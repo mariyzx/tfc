@@ -45,4 +45,8 @@ export default class MatchesService {
 
     return { status: 201, message: createdMatch };
   }
+
+  async updateMatch(id: number) {
+    await this.matchesModel.update({ inProgress: false }, { where: { id } });
+  }
 }
