@@ -36,7 +36,7 @@ export default class MatchesService {
     if (!team1 || !team2) return { status: 404, message: 'There is no team with such id!' };
     // se os times forem iguais retornam undefined;
     if (homeTeam === awayTeam) {
-      return { status: 400,
+      return { status: 422,
         message: 'It is not possible to create a match with two equal teams' };
     }
     // se existirem a partida é criada
