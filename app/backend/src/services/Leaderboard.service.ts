@@ -2,6 +2,7 @@ import { returnStatisticsHome,
   orderClass, returnStatisticsAway, returnAllStatistics } from '../helpers/utils/leaderboard';
 import MatchesModel from '../database/models/Matches';
 import TeamModel from '../database/models/Team';
+import ILeaderboard from '../interfaces/ILeaderboard';
 
 export default class LeaderboardService {
   constructor(
@@ -52,12 +53,13 @@ export default class LeaderboardService {
   }
 
   async getAll() {
-    const data = [] as any;
+    const data = [] as ILeaderboard[];
     const leaderboard1 = await this.getHome();
     const leaderboard2 = await this.getAway();
     const fullData = [...leaderboard1, ...leaderboard2];
 
     leaderboard1.forEach((tm) => {
+      // compara o id de todos placares com o placar 1
       const ret = fullData.filter(({ name }) => tm.name === name);
       data.push(returnAllStatistics(ret));
     });

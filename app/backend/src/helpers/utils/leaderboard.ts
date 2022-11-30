@@ -124,7 +124,7 @@ const returnStatisticsAway = (name: string, matches: IMatch[]) => {
   return data;
 };
 
-const returnAllStatistics = (tm: any) => {
+const returnAllStatistics = (tm: ILeaderboard[]) => {
   const totalPoints = tm[0].totalPoints + tm[1].totalPoints;
   const totalGames = tm[0].totalGames + tm[1].totalGames;
   data = {
