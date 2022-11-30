@@ -2,7 +2,7 @@ import ILeaderboard from '../../interfaces/ILeaderboard';
 import { IMatch } from '../../interfaces/IMatch';
 
 // template de informações;
-const data = {
+let data = {
   name: '',
   totalPoints: 0,
   totalGames: 0,
@@ -124,4 +124,22 @@ const returnStatisticsAway = (name: string, matches: IMatch[]) => {
   return data;
 };
 
-export { returnStatisticsHome, returnStatisticsAway, orderClass };
+const returnAllStatistics = (tm: any) => {
+  const totalPoints = tm[0].totalPoints + tm[1].totalPoints;
+  const totalGames = tm[0].totalGames + tm[1].totalGames;
+  data = {
+    name: tm[0].name,
+    totalPoints,
+    totalGames,
+    totalVictories: tm[0].totalVictories + tm[1].totalVictories,
+    totalDraws: tm[0].totalDraws + tm[1].totalDraws,
+    totalLosses: tm[0].totalLosses + tm[1].totalLosses,
+    goalsFavor: tm[0].goalsFavor + tm[1].goalsFavor,
+    goalsOwn: tm[0].goalsOwn + tm[1].goalsOwn,
+    goalsBalance: tm[0].goalsBalance + tm[1].goalsBalance,
+    efficiency: Number(((totalPoints / (totalGames * 3)) * 100).toFixed(2)),
+  };
+  return data;
+};
+
+export { returnStatisticsHome, returnStatisticsAway, orderClass, returnAllStatistics };

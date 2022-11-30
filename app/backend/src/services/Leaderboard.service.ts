@@ -1,5 +1,5 @@
 import { returnStatisticsHome,
-  orderClass, returnStatisticsAway } from '../helpers/utils/leaderboard';
+  orderClass, returnStatisticsAway, returnAllStatistics } from '../helpers/utils/leaderboard';
 import MatchesModel from '../database/models/Matches';
 import TeamModel from '../database/models/Team';
 
@@ -45,6 +45,22 @@ export default class LeaderboardService {
     });
 
     const data = await Promise.all(teamAway);
+
+    const orderedData = orderClass(data);
+
+    return orderedData.reverse();
+  }
+
+  async getAll() {
+    const data = [] as any;
+    const leaderboard1 = await this.getHome();
+    const leaderboard2 = await this.getAway();
+    const fullData = [...leaderboard1, ...leaderboard2];
+
+    leaderboard1.forEach((tm) => {
+      const ret = fullData.filter(({ name }) => tm.name === name);
+      data.push(returnAllStatistics(ret));
+    });
 
     const orderedData = orderClass(data);
 
