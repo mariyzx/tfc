@@ -27,11 +27,26 @@ const resetInfo = () => {
   data.efficiency = 0;
 };
 
+const orderClass = (matches: ILeaderboard[]) => matches.sort((t1, t2) => (
+  t1.totalPoints - t2.totalPoints
+  || t1.totalVictories - t2.totalVictories
+  || t1.goalsBalance - t2.goalsBalance
+  || t1.goalsFavor - t2.goalsFavor
+  || t1.goalsOwn - t2.goalsOwn
+));
+
 const addVictory = (homeTeamGoals: number, awayTeamGoals: number) => {
   data.totalPoints += 3;
   data.totalVictories += 1;
   data.goalsFavor += homeTeamGoals;
   data.goalsOwn += awayTeamGoals;
+};
+
+const addVictoryAway = (homeTeamGoals: number, awayTeamGoals: number) => {
+  data.totalPoints += 3;
+  data.totalVictories += 1;
+  data.goalsFavor += awayTeamGoals;
+  data.goalsOwn += homeTeamGoals;
 };
 
 const addDraws = (homeTeamGoals: number, awayTeamGoals: number) => {
@@ -41,18 +56,23 @@ const addDraws = (homeTeamGoals: number, awayTeamGoals: number) => {
   data.goalsOwn += awayTeamGoals;
 };
 
-const orderClass = (matches: ILeaderboard[]) => matches.sort((t1, t2) => (
-  t1.totalPoints - t2.totalPoints
-  || t1.totalVictories - t2.totalVictories
-  || t1.goalsBalance - t2.goalsBalance
-  || t1.goalsFavor - t2.goalsFavor
-  || t1.goalsOwn - t2.goalsOwn
-));
+const addDrawsAway = (homeTeamGoals: number, awayTeamGoals: number) => {
+  data.totalPoints += 1;
+  data.totalDraws += 1;
+  data.goalsFavor += awayTeamGoals;
+  data.goalsOwn += homeTeamGoals;
+};
 
 const addLoss = (homeTeamGoals: number, awayTeamGoals: number) => {
   data.totalLosses += 1;
   data.goalsFavor += homeTeamGoals;
   data.goalsOwn += awayTeamGoals;
+};
+
+const addLossAway = (homeTeamGoals: number, awayTeamGoals: number) => {
+  data.totalLosses += 1;
+  data.goalsFavor += awayTeamGoals;
+  data.goalsOwn += homeTeamGoals;
 };
 
 const returnPointsHome = (matches: IMatch[]) => {
@@ -63,6 +83,17 @@ const returnPointsHome = (matches: IMatch[]) => {
     if (homeTeamGoals === awayTeamGoals) addDraws(homeTeamGoals, awayTeamGoals);
     // se tiver menos gols +1 derrota;
     if (homeTeamGoals < awayTeamGoals) addLoss(homeTeamGoals, awayTeamGoals);
+  });
+};
+
+const returnPointsAway = (matches: IMatch[]) => {
+  matches.forEach(({ homeTeamGoals, awayTeamGoals }) => {
+    // se awayTeam tiver mais gols +1 vitória:
+    if (homeTeamGoals < awayTeamGoals) addVictoryAway(homeTeamGoals, awayTeamGoals);
+    // se empatar +1 empate;
+    if (homeTeamGoals === awayTeamGoals) addDrawsAway(homeTeamGoals, awayTeamGoals);
+    // se tiver menos gols +1 derrota;
+    if (homeTeamGoals > awayTeamGoals) addLossAway(homeTeamGoals, awayTeamGoals);
   });
 };
 
@@ -80,4 +111,17 @@ const returnStatisticsHome = (name: string, matches: IMatch[]) => {
   return data;
 };
 
-export { returnStatisticsHome, orderClass };
+const returnStatisticsAway = (name: string, matches: IMatch[]) => {
+  if (name !== data.name) resetInfo();
+  data.name = name;
+  returnPointsAway(matches);
+  data.totalGames += 1;
+  data.goalsBalance = data.goalsFavor - data.goalsOwn;
+  const ef = (data.totalPoints / (data.totalGames * 3)) * 100;
+  const eff = Number(ef).toFixed(2);
+  data.efficiency = Number(eff);
+
+  return data;
+};
+
+export { returnStatisticsHome, returnStatisticsAway, orderClass };
