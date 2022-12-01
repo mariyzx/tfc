@@ -6,71 +6,15 @@ export const userMock  = {
   email: "admin@admin.com",
 }
 
-export const tokenMock = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiaWF0IjoxNjY5ODM3NzkxLCJleHAiOjE2Njk5MjQxOTF9.dJDndy8z1Wl7CC1ibFi8ogvKBfHPIxCWzk7zAzskchI"
+export const jwtMock = {
+  "id": 1,
+  "email": "admin@admin.com",
+  "role": "admin",
+  "username": "Admin",
+  "iat": 1669837791,
+  "exp": 1669924191
+}
 
-export const teamMock = [
-  {
-    "id": 1,
-    "clubName": "Avaí/Kindermann"
-  },
-  {
-    "id": 2,
-    "clubName": "Bahia"
-  },
-  {
-    "id": 3,
-    "clubName": "Botafogo"
-  },
-  {
-    "id": 4,
-    "clubName": "Corinthians"
-  },
-  {
-    "id": 5,
-    "clubName": "Cruzeiro"
-  },
-  {
-    "id": 6,
-    "clubName": "Ferroviária"
-  },
-  {
-    "id": 7,
-    "clubName": "Flamengo"
-  },
-  {
-    "id": 8,
-    "clubName": "Grêmio"
-  },
-  {
-    "id": 9,
-    "clubName": "Internacional"
-  },
-  {
-    "id": 10,
-    "clubName": "Minas Brasília"
-  },
-  {
-    "id": 11,
-    "clubName": "Napoli-SC"
-  },
-  {
-    "id": 12,
-    "clubName": "Palmeiras"
-  },
-  {
-    "id": 13,
-    "clubName": "Real Brasília"
-  },
-  {
-    "id": 14,
-    "clubName": "Santos"
-  },
-  {
-    "id": 15,
-    "clubName": "São José-SP"
-  },
-  {
-    "id": 16,
-    "clubName": "São Paulo"
-  }
-]
+export const roleMock = { role: 'admin'}
+
+export const tokenMock = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiaWF0IjoxNjY5ODM3NzkxLCJleHAiOjE2Njk5MjQxOTF9.dJDndy8z1Wl7CC1ibFi8ogvKBfHPIxCWzk7zAzskchI"
