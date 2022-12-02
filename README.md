@@ -16,8 +16,9 @@ Clone o repositório: `git@github.com:mariyzx/tfc.git`.
   <summary><strong>Rodando com Docker :whale: </strong></summary>
   
   ## Para rodar o projeto com Docker certifique-se de ter o Docker e o Docker-Compose instalados e com as versões `20.10.13` e `1.29.3` respectivamente.
-   > Entre na pasta do projeto clonado: 
+   > Entre na pasta `app` do projeto clonado: 
   - `cd tfc`.
+  - `cd app`.
    > Suba os containers:
   - `docker-compose up -d`.
   > Esse serviço irá inicializar 3 containers chamados `tfc_database`, `tfc_backend` e `tfc_frontend`.
