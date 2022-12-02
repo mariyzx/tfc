@@ -19,8 +19,10 @@ Clone o repositório: `git@github.com:mariyzx/tfc.git`.
    > Entre na pasta `app` do projeto clonado: 
   - `cd tfc`.
   - `cd app`.
+  > Instale as dependências:
+  - `npm install`
    > Suba os containers:
-  - `docker-compose up -d`.
+  - `npm run:compose:up:dev`.
   > Esse serviço irá inicializar 3 containers chamados `tfc_database`, `tfc_backend` e `tfc_frontend`.
   - A partir daqui você pode acessar a aplicação Front-end através de: `localhost:3000` e Back-end através de: `localhost:3001`.
 
