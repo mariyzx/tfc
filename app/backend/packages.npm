@@ -1,2 +1,4 @@
 joi
 @types/joi
+swagger-ui-express
+@types/swagger-ui-express
