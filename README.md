@@ -2,6 +2,8 @@
 
 Nesse projeto foi desenvolvido uma API para um site informativo de partidas e classificações de futebol utilizando os princípios SOLID e POO. Nessa API é possível: Listar times e partidas, autenticar o usuário cadastrado, gerar classificações e manipular o banco de dados MySQL.
 
+[Documentação da API TFC!](https://tfc-production.up.railway.app/docs/)
+
 ## Desempenho
 
 O projeto Trybe Futebol Clube foi desenvolvido por [Mariana Werneck](https://www.linkedin.com/in/marinhomariana8/) durante o curso de Desenvolvimento Web na [Trybe](https://www.betrybe.com/)! Foi adquirido 100% do projeto total!
