@@ -1,5 +1,8 @@
 'use strict';
 
+// Permitem a criação e manipulação do banco, além de manter um histórico
+// de alterações que são sofridas ao longo do tempo.
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('users', {

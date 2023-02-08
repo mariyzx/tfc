@@ -2,6 +2,10 @@ import { DataTypes, Model } from 'sequelize';
 import db from '.';
 import TeamModel from './Team';
 
+// A camada de model representa a tabela no banco de dados, é responsável pelo acesso e
+// modelagem dos dados. Informa ao Sequelize várias coisas sobre a entidade, como o nome da tabela,
+// quais colunas ela possui (e seus tipos), e suas relações;
+
 export default class MatchesModel extends Model {
   declare id: number;
   declare homeTeam: number;

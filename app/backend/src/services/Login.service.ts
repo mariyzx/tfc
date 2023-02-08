@@ -8,10 +8,8 @@ export default class LoginService {
     readonly userModel = UserModel,
   ) {}
 
+  // realiza o login do usuário caso as credenciais estejam corretas;
   async login(cred: ICredentials) {
-    if (!cred.email || !cred.password) {
-      return { status: 400, data: { message: 'All fields must be filled' } };
-    }
     // o usuário precisa existir;
     const user = await this.userModel.findOne({ where: { email: cred.email } });
     // se nao existir retorna erro;
@@ -22,11 +20,12 @@ export default class LoginService {
     if (!pass) return { status: 401, data: { message: 'Incorrect email or password' } };
     // se a senha for igual precisa retornar o token:
     const { id, email, role, username } = user;
-    const token = jwtGen({ id, email, role, username });
+    const token = jwtGen({ id, email, role, username }); // gera o token com as informações o usuário
 
     return { status: 200, data: { user: { id, email, role, username }, token } };
   }
 
+  // valida o token de determinado usuário;
   validate = async (token: string): Promise<IRole | undefined> => {
     try {
       // precisa ser tipo IVerify para retornar o email;
