@@ -15,10 +15,10 @@ export default class MatchesController {
 
   saveMatch = async (req: Request, res: Response) => {
     const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
-    const { authorization } = req.headers;
+/*     const { authorization } = req.headers;
     // validar o token
     const val = validateToken(authorization as string);
-    if (val) return res.status(val.status).json({ message: val.message });
+    if (val) return res.status(val.status).json({ message: val.message }); */
 
     const match = { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals };
     const createdMatch = await this.matchesService.saveMatch(match);

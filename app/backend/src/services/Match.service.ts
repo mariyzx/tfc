@@ -6,6 +6,7 @@ export default class MatchesService {
   constructor(readonly matchesModel = MatchesModel) {}
 
   async getMatches(inProgress: string | undefined): Promise<IMatchWithId[]> {
+    // pega todas as partidas do banco, incluindo as colunas 'teamHome' e 'teamAway';
     const matches = await this.matchesModel.findAll({
       include: [{
         model: TeamModel,
@@ -18,6 +19,7 @@ export default class MatchesService {
       ],
     });
 
+    // filtra todas as partidas e retorna de acordo com o progresso;
     if (inProgress === 'true') {
       return matches.filter((match) => match.inProgress);
     } if (inProgress === 'false') {
@@ -30,6 +32,7 @@ export default class MatchesService {
   async saveMatch({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: IMatch) {
     // os times precisam existir:
     const matches = await this.getMatches(undefined);
+    // retorna as partidas com cada um dos times
     const team1 = matches.find((mt) => mt.id === homeTeam);
     const team2 = matches.find((mt) => mt.id === awayTeam);
     // se não existirem retornam undefined;
