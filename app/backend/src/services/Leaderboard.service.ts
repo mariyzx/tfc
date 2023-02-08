@@ -12,7 +12,10 @@ export default class LeaderboardService {
   ) {}
 
   async getMatches(team: ITeam, type: string): Promise<IMatch[] | undefined> {
+    // essa função auxilia no retorno das partidas de determinado time de acordo
+    // com o seu tipo
     let teamsMatches;
+
     if (type === 'home') {
       teamsMatches = await this.matchesModel
         .findAll({ where: { homeTeam: team.id, inProgress: false } });
@@ -26,9 +29,9 @@ export default class LeaderboardService {
   }
 
   async getStatistics(type: string) {
-    const teams = await this.teamModel.findAll();
+    const allTeams = await this.teamModel.findAll();
     // compara os ids dos times da casa com todos os ids    
-    const teamsType = await teams.map(async (team) => {
+    const allMatches = allTeams.map(async (team) => {
       // pega as partidas desse determinado time
       const matches = await this.getMatches(team, type);
       // calcula suas estatísticas
@@ -39,7 +42,7 @@ export default class LeaderboardService {
       return { ...retStat };
     });
 
-    const data = await Promise.all(teamsType);
+    const data = await Promise.all(allMatches);
     // aqui está retornando os dados corretos mas em ordem contrária :/
     const orderedData = orderClass(data);
     // revertendo a ordem;
