@@ -15,10 +15,10 @@ export default class MatchesController {
 
   saveMatch = async (req: Request, res: Response) => {
     const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
-/*     const { authorization } = req.headers;
-    // validar o token
-    const val = validateToken(authorization as string);
-    if (val) return res.status(val.status).json({ message: val.message }); */
+
+    if (!homeTeam || !awayTeam || !homeTeamGoals || !awayTeamGoals) {
+      return res.status(400).json({ message: 'Some fiels are missing!' });
+    }
 
     const match = { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals };
     const createdMatch = await this.matchesService.saveMatch(match);
@@ -30,10 +30,14 @@ export default class MatchesController {
     return res.status(createdMatch.status).json(createdMatch.message);
   };
 
-  updateMatch = async (req: Request, res: Response) => {
+  finishMatch = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    await this.matchesService.updateMatch(Number(id));
+    const updated = await this.matchesService.finishMatch(Number(id));
+
+    if (!updated) {
+      return res.status(404).json({ message: 'Match not found!' })
+    }
 
     return res.status(200).json({ message: 'Finished!' });
   };
@@ -42,7 +46,15 @@ export default class MatchesController {
     const { id } = req.params;
     const { homeTeamGoals, awayTeamGoals } = req.body;
 
-    await this.matchesService.updateResult(Number(id), homeTeamGoals, awayTeamGoals);
+    if (!homeTeamGoals || !awayTeamGoals) {
+      return res.status(400).json({ message: 'Some fiels are missing!' });
+    }
+
+    const updated = await this.matchesService.updateResult(Number(id), homeTeamGoals, awayTeamGoals);
+
+    if (!updated) {
+      return res.status(404).json({ message: 'Match not found!' })
+    }
 
     return res.status(200).json({ message: 'Updated!' });
   };

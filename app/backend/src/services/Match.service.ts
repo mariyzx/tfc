@@ -30,6 +30,7 @@ export default class MatchesService {
   }
 
   async saveMatch({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: IMatch) {
+    // post /matches
     // os times precisam existir:
     const matches = await this.getMatches(undefined);
     // retorna as partidas com cada um dos times
@@ -49,11 +50,30 @@ export default class MatchesService {
     return { status: 201, message: createdMatch };
   }
 
-  async updateMatch(id: number) {
+  async finishMatch(id: number) {
+    // patch /:id/finish
+    // a partida precisa existir
+    const matches = await this.getMatches(undefined);
+    const currentMatch = matches.filter((mt) => mt.id === id);
+    // retorna um array vazio se nao existir partida com aquele id
+    if (currentMatch.length === 0) {
+      return null;
+    }
+
     await this.matchesModel.update({ inProgress: false }, { where: { id } });
+    return 'Finished!';
   }
 
   async updateResult(id: number, homeTeamGoals: number, awayTeamGoals: number) {
+    // patch /:id
+    const matches = await this.getMatches(undefined);
+    const currentMatch = matches.filter((mt) => mt.id === id);
+    // retorna um array vazio se nao existir partida com aquele id
+    if (currentMatch.length === 0) {
+      return null;
+    }
+
     await this.matchesModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    return 'Updated!';
   }
 }
