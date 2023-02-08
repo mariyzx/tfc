@@ -36,7 +36,7 @@ export default class LeaderboardService {
       const matches = await this.getMatches(team, type);
       // calcula suas estatísticas
       const statistics = await matches!.map((mt) => returnStatistics(team.teamName, [mt], type));
-
+      // até aqui, o array statistics tem as informações do time 2x, por isso, pego apenas uma informação:
       const retStat = statistics[statistics.length - 1];
 
       return { ...retStat };
@@ -66,29 +66,3 @@ export default class LeaderboardService {
     return orderedData.reverse();
   }
 }
-
-
-/* {
-  "name": "Corinthians",
-  "totalPoints": 6,
-  "totalGames": 3,
-  "totalVictories": 2, 
-  "totalDraws": 0,
-  "totalLosses": 1,
-  "goalsFavor": 6,
-  "goalsOwn": 2,
-  "goalsBalance": 4,
-  "efficiency": 66.67
-}, */
-/* {
-  "name": "Corinthians",
-  "totalPoints": 6,
-  "totalGames": 3,
-  "totalVictories": 2,
-  "totalDraws": 0,
-  "totalLosses": 1,
-  "goalsFavor": 6,
-  "goalsOwn": 2,
-  "goalsBalance": 4,
-  "efficiency": 66.67
-}, */
