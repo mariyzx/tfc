@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e Conduta e do Manual da Pessoa Estudante da Trybe.",
   "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "postinstall": "npm run install:apps",
     "install:apps": "./apps_install.sh",

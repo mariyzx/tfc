@@ -10,7 +10,7 @@
     "version": "1.0.0"
   },
   "servers": [
-    { "url": "http://localhost:3001" }
+    { "url": "https://tfc-production.up.railway.app" }
   ],
   "tags": [
     { "name": "login",
