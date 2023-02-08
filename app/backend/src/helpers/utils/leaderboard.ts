@@ -97,24 +97,19 @@ const returnPointsAway = (matches: IMatch[]) => {
   });
 };
 
-const returnStatisticsHome = (name: string, matches: IMatch[]) => {
+const returnPoints = (type: string, matches: IMatch[]) => {
+  if (type === 'home') {
+    returnPointsHome(matches)
+  } else {
+    returnPointsAway(matches);
+  }
+}
+
+const returnStatistics = (name: string, matches: IMatch[], type: string) => {
   // se o nome não for uma string vazia, as informações são 'limpas'
   if (name !== data.name) resetInfo();
   data.name = name;
-  returnPointsHome(matches);
-  data.totalGames += 1;
-  data.goalsBalance = data.goalsFavor - data.goalsOwn;
-  const ef = (data.totalPoints / (data.totalGames * 3)) * 100;
-  const eff = Number(ef).toFixed(2);
-  data.efficiency = Number(eff);
-
-  return data;
-};
-
-const returnStatisticsAway = (name: string, matches: IMatch[]) => {
-  if (name !== data.name) resetInfo();
-  data.name = name;
-  returnPointsAway(matches);
+  returnPoints(type, matches);
   data.totalGames += 1;
   data.goalsBalance = data.goalsFavor - data.goalsOwn;
   const ef = (data.totalPoints / (data.totalGames * 3)) * 100;
@@ -142,4 +137,4 @@ const returnAllStatistics = (tm: ILeaderboard[]) => {
   return data;
 };
 
-export { returnStatisticsHome, returnStatisticsAway, orderClass, returnAllStatistics };
+export { returnStatistics, orderClass, returnAllStatistics };

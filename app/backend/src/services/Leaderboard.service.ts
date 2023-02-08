@@ -1,8 +1,9 @@
-import { returnStatisticsHome,
-  orderClass, returnStatisticsAway, returnAllStatistics } from '../helpers/utils/leaderboard';
+import { orderClass, returnAllStatistics, returnStatistics } from '../helpers/utils/leaderboard';
 import MatchesModel from '../database/models/Matches';
 import TeamModel from '../database/models/Team';
 import ILeaderboard from '../interfaces/ILeaderboard';
+import ITeam from '../interfaces/ITeam';
+import { IMatch } from '../interfaces/IMatch';
 
 export default class LeaderboardService {
   constructor(
@@ -10,52 +11,45 @@ export default class LeaderboardService {
     readonly matchesModel = MatchesModel,
   ) {}
 
-  async getHome() {
-    const teams = await this.teamModel.findAll();
-    // compara os ids dos times da casa com todos os ids
-    const teamsHome = await teams.map(async (team) => {
-      const teamsMatches = await this.matchesModel
+  async getMatches(team: ITeam, type: string): Promise<IMatch[] | undefined> {
+    let teamsMatches;
+    if (type === 'home') {
+      teamsMatches = await this.matchesModel
         .findAll({ where: { homeTeam: team.id, inProgress: false } });
+
+    } if (type === 'away') {
+      teamsMatches = await this.matchesModel
+        .findAll({ where: { awayTeam: team.id, inProgress: false } });
+    }
+
+    return teamsMatches;
+  }
+
+  async getStatistics(type: string) {
+    const teams = await this.teamModel.findAll();
+    // compara os ids dos times da casa com todos os ids    
+    const teamsType = await teams.map(async (team) => {
+      // pega as partidas desse determinado time
+      const matches = await this.getMatches(team, type);
       // calcula suas estatísticas
-      const statistics = await teamsMatches.map((mt) => returnStatisticsHome(team.teamName, [mt]));
+      const statistics = await matches!.map((mt) => returnStatistics(team.teamName, [mt], type));
 
       const retStat = statistics[statistics.length - 1];
 
       return { ...retStat };
     });
 
-    const data = await Promise.all(teamsHome);
+    const data = await Promise.all(teamsType);
     // aqui está retornando os dados corretos mas em ordem contrária :/
     const orderedData = orderClass(data);
     // revertendo a ordem;
     return orderedData.reverse();
   }
 
-  async getAway() {
-    const teams = await this.teamModel.findAll();
-
-    const teamAway = await teams.map(async (team) => {
-      const teamsMatches = await this.matchesModel
-        .findAll({ where: { awayTeam: team.id, inProgress: false } });
-
-      const statistics = await teamsMatches.map((mt) => returnStatisticsAway(team.teamName, [mt]));
-
-      const retStat = statistics[statistics.length - 1];
-
-      return { ...retStat };
-    });
-
-    const data = await Promise.all(teamAway);
-
-    const orderedData = orderClass(data);
-
-    return orderedData.reverse();
-  }
-
   async getAll() {
     const data = [] as ILeaderboard[];
-    const leaderboard1 = await this.getHome();
-    const leaderboard2 = await this.getAway();
+    const leaderboard1 = await this.getStatistics('home');
+    const leaderboard2 = await this.getStatistics('away');
     const fullData = [...leaderboard1, ...leaderboard2];
 
     leaderboard1.forEach((tm) => {
