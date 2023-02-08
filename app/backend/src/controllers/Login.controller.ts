@@ -6,14 +6,8 @@ export default class LoginController {
   constructor(private loginService: LoginService = new LoginService()) {}
 
   login = async (req: Request, res: Response) => {
-    // se o usuário não inserir informações retorna erro;
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ message: 'All fields must be filled' });
-    }
-
     const { status, data } = await this.loginService.login(req.body);
+
     return res.status(status).json(data);
   };
 
