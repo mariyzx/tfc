@@ -14,10 +14,10 @@ export default class LoginService {
   async login(cred: ICredentials) {
     // o usuário precisa existir;
     const user = await this.loginRepository.getUser(cred.email);
-    if (!user) return { status: 401, data: { message: 'Incorrect email or password' } };
 
-    const pass = passValidate(cred.password, user.password);
-    if (!pass) return { status: 401, data: { message: 'Incorrect email or password' } };
+    if (!user || !passValidate(cred.password, user.password)) {
+      return { status: 401, data: { message: 'Incorrect email or password' } }
+    };
     
     // se a senha for igual precisa retornar o token:
     const { id, email, role, username } = user;
