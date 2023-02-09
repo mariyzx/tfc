@@ -26,7 +26,7 @@ export default class LeaderboardService {
     return teamsMatches;
   }
 
-  async getStatistics(type: string) {
+  async getStatistics(type: string): Promise<ILeaderboard[]> {
     const allTeams = await this.teamModel.findAll();
     // compara os ids dos times da casa com todos os ids    
     const allMatches = allTeams.map(async (team) => {
@@ -47,7 +47,7 @@ export default class LeaderboardService {
     return orderedData.reverse();
   }
 
-  async getAll() {
+  async getAll(): Promise<ILeaderboard[]> {
     const data = [] as ILeaderboard[];
     const leaderboard1 = await this.getStatistics('home');
     const leaderboard2 = await this.getStatistics('away');
