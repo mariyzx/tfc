@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import TeamService from '../services/Team.service';
 
 export default class TeamController {
-  constructor(private teamService: TeamService = new TeamService()) {}
+  constructor(private teamService = new TeamService()) {}
 
   getAll = async (req: Request, res: Response) => {
     const teams = await this.teamService.getAllTeams();
