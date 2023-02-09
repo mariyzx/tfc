@@ -1,7 +1,7 @@
-import * as bcrypt from 'bcryptjs';
 import { jwtGen, verify } from '../helpers/utils/jwt';
 import UserModel from '../database/models/User';
 import { ICredentials, IRole, IVerify } from '../interfaces/ILogin';
+import passValidate from '../helpers/validations/passValidate';
 
 export default class LoginService {
   // Injeção de dependência, não depende da implementação, apenas da abstração.
@@ -15,7 +15,7 @@ export default class LoginService {
     const user = await this.userModel.findOne({ where: { email: cred.email } });
     if (!user) return { status: 401, data: { message: 'Incorrect email or password' } };
 
-    const pass = await bcrypt.compareSync(cred.password, user.password);
+    const pass = passValidate(cred.password, user.password);
     if (!pass) return { status: 401, data: { message: 'Incorrect email or password' } };
     
     // se a senha for igual precisa retornar o token:
