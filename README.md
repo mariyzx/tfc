@@ -1,6 +1,6 @@
 # Projeto Trybe Futebol Clube!
 
-Nesse projeto foi desenvolvido uma API para um site informativo de partidas e classificações de futebol utilizando os princípios SOLID e POO. Nessa API é possível: Listar times e partidas, autenticar o usuário cadastrado, gerar classificações e manipular o banco de dados MySQL.
+Nesse projeto foi desenvolvida uma API para um site informativo de partidas e classificações de futebol utilizando os princípios SOLID e POO. Nessa API é possível: Listar times e partidas, autenticar o usuário cadastrado, gerar classificações e manipular o banco de dados MySQL.
 
 [Documentação da API TFC!](https://tfc-production.up.railway.app/docs/)
 
