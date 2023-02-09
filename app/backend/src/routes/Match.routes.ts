@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import validateToken from '../middlewares/token';
-import MatchesController from '../controllers/Match.controller';
+import { CreateMatchesControllerFactory } from '../factories/CreateMatchesControllerFactory';
 
 const router = Router();
 
-const matchesController = new MatchesController();
+const matchesController = CreateMatchesControllerFactory.make();
 
 router.get('/', (req, res) => matchesController.getAllMatches(req, res));
 router.post('/', validateToken, (req, res) => matchesController.saveMatch(req, res));

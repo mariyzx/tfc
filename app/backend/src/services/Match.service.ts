@@ -1,39 +1,28 @@
-import TeamModel from '../database/models/Team';
-import MatchesModel from '../database/models/Matches';
-import { IMatch, IMatchWithId } from '../interfaces/IMatch';
+import { IMatch, IMatchResponse } from '../interfaces/IMatch';
+import { MatchRepository } from '../repositories/Match.repository';
 
 export default class MatchesService {
-  constructor(readonly matchesModel = MatchesModel) {}
+  constructor(readonly matchesModel: MatchRepository) {}
 
-  async getMatches(inProgress?: string): Promise<IMatchWithId[]> {
+  async getMatches(inProgress?: string): Promise<IMatchResponse> {
     // pega todas as partidas do banco, incluindo as colunas 'teamHome' e 'teamAway';
-    const matches = await this.matchesModel.findAll({
-      include: [{
-        model: TeamModel,
-        as: 'teamHome',
-        attributes: { exclude: ['id'] },
-      },
-      { model: TeamModel,
-        as: 'teamAway',
-        attributes: { exclude: ['id'] } },
-      ],
-    });
+    const matches = await this.matchesModel.getMatches();
 
     if (inProgress) {
-      return matches.filter((match) => match.inProgress);
+      const matchesProgress = matches.filter((match) => match.inProgress);
+      return { status: 200, data: matchesProgress }
     }
 
-    return matches;
+    return { status: 200, data: matches };
   }
 
-  async saveMatch({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: IMatch) {
-    // post /matches
-    const matches = await this.getMatches();
+  async saveMatch({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: IMatch): Promise<IMatchResponse> {
+    const matches = await this.matchesModel.getMatches();
     // retorna as partidas com cada um dos times
     const team1 = matches.find((mt) => mt.id === homeTeam);
     const team2 = matches.find((mt) => mt.id === awayTeam);
     // se não existirem retornam erro;
-    if (!team1 || !team2) return { status: 404, message: 'There is no team with such id!' };
+    if (!team1 || !team2) return { status: 404, data: { message: 'There is no team with such id!'} };
     // se os times forem iguais retornam undefined;
     if (homeTeam === awayTeam) {
       // 422 - erro semântico
@@ -41,36 +30,35 @@ export default class MatchesService {
         message: 'It is not possible to create a match with two equal teams' } };
     }
     // se existirem a partida é criada
-    const createdMatch = await this.matchesModel
-      .create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: true });
-
-    return { status: 201, data: { message: createdMatch } };
+    const createdMatch = await this.matchesModel.saveMatch(
+      { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals })
+      
+    return { status: 201, data: createdMatch };
   }
 
-  async finishMatch(id: number) {
-    // patch /:id/finish
-    // a partida precisa existir
-    const matches = await this.getMatches();
+  async finishMatch(id: number): Promise<IMatchResponse> {
+    const matches = await this.matchesModel.getMatches();
     const currentMatch = matches.filter((mt) => mt.id === id);
     // retorna um array vazio se nao existir partida com aquele id
     if (currentMatch.length === 0) {
       return { status: 404, data: { message: 'Match not found!' }};
     }
 
-    await this.matchesModel.update({ inProgress: false }, { where: { id } });
+    await this.matchesModel.update({ inProgress: false }, id);
+
     return { status: 201, data: { message: 'Finished!' }};
   }
 
-  async updateResult(id: number, homeTeamGoals: number, awayTeamGoals: number) {
-    // patch /:id
-    const matches = await this.getMatches();
+  async updateResult(data: object, id: number): Promise<IMatchResponse>  {
+    const matches = await this.matchesModel.getMatches();
     const currentMatch = matches.filter((mt) => mt.id === id);
     // retorna um array vazio se nao existir partida com aquele id
     if (currentMatch.length === 0) {
       return { status: 404, data: { message: 'Match not found!' }};
     }
 
-    await this.matchesModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    await this.matchesModel.update(data, id);
+    
     return { status: 201, data: { message: 'Updated!' }};
   }
 }

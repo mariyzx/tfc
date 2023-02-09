@@ -1,14 +1,20 @@
-export interface IMatchWithId {
+export interface IMatch {
   id: number;
   homeTeam: number;
-  awayTeam: number;
   homeTeamGoals: number;
+  awayTeam: number;
   awayTeamGoals: number;
+  inProgress?: boolean;
 }
 
-export interface IMatch {
-  homeTeam: number;
-  awayTeam: number;
-  homeTeamGoals: number;
-  awayTeamGoals: number;
+export interface MatchParams {
+  homeTeam: number,
+  awayTeam: number,
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+}
+
+export interface IMatchResponse {
+  status: number;
+  data: IMatch[] | object;
 }

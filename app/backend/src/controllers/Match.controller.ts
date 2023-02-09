@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
-import validateToken from '../helpers/validations/tokenValidation';
-import MatchesService from '../services/Match.service';
+import { IMatchService } from '../interfaces/services/MatchService.interface';
 
 export default class MatchesController {
-  constructor(private matchesService = new MatchesService()) {}
+  constructor(private matchesService: IMatchService) {}
 
   getAllMatches = async (req: Request, res: Response) => {
     const { inProgress } = req.query;
@@ -20,8 +19,7 @@ export default class MatchesController {
       return res.status(400).json({ message: 'Some fiels are missing!' });
     }
 
-    const { status, data } = await this.matchesService.saveMatch(
-      { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals });
+    const { status, data } = await this.matchesService.saveMatch(req.body);
 
     return res.status(status).json(data);
   };
@@ -42,9 +40,10 @@ export default class MatchesController {
       return res.status(400).json({ message: 'Some fiels are missing!' });
     }
 
-    const { status, data } = await this.matchesService.updateResult(Number(id), homeTeamGoals, awayTeamGoals);
+    const { status, data } = await this.matchesService.updateResult(
+      {homeTeamGoals, awayTeamGoals}, Number(id)
+    );
 
     return res.status(status).json(data);
-
   };
 }

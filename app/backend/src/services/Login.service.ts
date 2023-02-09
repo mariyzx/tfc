@@ -1,5 +1,4 @@
 import { jwtGen, verify } from '../helpers/utils/jwt';
-import UserModel from '../database/models/User';
 import { ICredentials, ILoginResponse, IRole, IVerify } from '../interfaces/ILogin';
 import passValidate from '../helpers/validations/passValidate';
 import { ILoginRepository } from '../interfaces/repositories/ILoginRepository';
