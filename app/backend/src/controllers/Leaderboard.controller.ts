@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import LeaderboardService from '../services/Leaderboard.service';
+import { ILeaderboardService } from '../interfaces/services/LeaderboardService.interface';
 
 export default class LeaderboardController {
-  constructor(private leaderboardService = new LeaderboardService()) {}
+  constructor(private leaderboardService: ILeaderboardService ) {}
 
   getHome = async (_req: Request, res: Response) => {
     const teamsHome = await this.leaderboardService.getStatistics('home');

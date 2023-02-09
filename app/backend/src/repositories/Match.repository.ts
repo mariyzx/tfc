@@ -20,6 +20,23 @@ export class MatchRepository implements IMatchRepository {
     return matches;
   }
 
+  async getMatchesInProgress(status: boolean): Promise<IMatch[]> {
+    const matches = await MatchesModel.findAll({
+      include: [{
+        model: TeamModel,
+        as: 'teamHome',
+        attributes: { exclude: ['id'] },
+      },
+      { model: TeamModel,
+        as: 'teamAway',
+        attributes: { exclude: ['id'] } },
+      ],
+      where: { inProgress: status }
+    });
+
+    return matches;
+  }
+
   async saveMatch(match: MatchParams): Promise<IMatch> {
     return MatchesModel.create(
       { ...match, inProgress: true });

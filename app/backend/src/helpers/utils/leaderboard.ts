@@ -1,4 +1,4 @@
-import ILeaderboard from '../../interfaces/ILeaderboard';
+import { ILeaderboard } from '../../interfaces/ILeaderboard';
 import { IMatch } from '../../interfaces/IMatch';
 
 // template de informações;

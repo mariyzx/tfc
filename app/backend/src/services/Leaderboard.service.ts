@@ -1,28 +1,26 @@
 import { orderClass, returnAllStatistics, returnStatistics } from '../helpers/utils/leaderboard';
-import MatchesModel from '../database/models/Matches';
-import TeamModel from '../database/models/Team';
-import ILeaderboard from '../interfaces/ILeaderboard';
 import ITeam from '../interfaces/ITeam';
 import { IMatch } from '../interfaces/IMatch';
+import { MatchRepository } from '../repositories/Match.repository';
+import { TeamRepository } from '../repositories/Team.repository';
+import { ILeaderboard } from '../interfaces/ILeaderboard';
 
 export default class LeaderboardService {
   constructor(
-    readonly teamModel = TeamModel,
-    readonly matchesModel = MatchesModel,
+    readonly teamModel: TeamRepository,
+    readonly matchesModel: MatchRepository,
   ) {}
 
-  async getMatches(team: ITeam, type: string): Promise<IMatch[] | undefined> {
+  async getMatches(team: ITeam, type: string) {
     // essa função auxilia no retorno das partidas de determinado time de acordo
     // com o seu tipo
     let teamsMatches;
+    const allMatches = await this.matchesModel.getMatchesInProgress(false);
 
     if (type === 'home') {
-      teamsMatches = await this.matchesModel
-        .findAll({ where: { homeTeam: team.id, inProgress: false } });
-
+      teamsMatches = allMatches.filter((mt) => mt.homeTeam === team.id);
     } if (type === 'away') {
-      teamsMatches = await this.matchesModel
-        .findAll({ where: { awayTeam: team.id, inProgress: false } });
+      teamsMatches = allMatches.filter((mt) => mt.awayTeam === team.id);
     }
 
     return teamsMatches;
