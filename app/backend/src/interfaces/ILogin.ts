@@ -3,6 +3,14 @@ export interface ICredentials {
   password: string;
 }
 
+export interface IUser {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+  password: string;
+}
+
 export interface IVerify {
   email: string
 }

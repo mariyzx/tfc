@@ -2,17 +2,18 @@ import { jwtGen, verify } from '../helpers/utils/jwt';
 import UserModel from '../database/models/User';
 import { ICredentials, IRole, IVerify } from '../interfaces/ILogin';
 import passValidate from '../helpers/validations/passValidate';
+import { ILoginRepository } from '../interfaces/repositories/ILoginRepository';
 
 export default class LoginService {
   // Injeção de dependência, não depende da implementação, apenas da abstração.
   constructor(
-    readonly userModel = UserModel,
+    readonly loginRepository: ILoginRepository,
   ) {}
 
   // realiza o login do usuário caso as credenciais estejam corretas;
   async login(cred: ICredentials) {
     // o usuário precisa existir;
-    const user = await this.userModel.findOne({ where: { email: cred.email } });
+    const user = await this.loginRepository.getUser(cred.email);
     if (!user) return { status: 401, data: { message: 'Incorrect email or password' } };
 
     const pass = passValidate(cred.password, user.password);
@@ -31,7 +32,7 @@ export default class LoginService {
       // precisa ser tipo IVerify para retornar o email;
       // se falhar vai pro catch
       const { email } = (<IVerify>verify(token));
-      const user = await this.userModel.findOne({ where: { email } });
+      const user = await this.loginRepository.getUser(email);
 
       if (!user) return { status: 404, data: { message: 'User not found!' } };
 
