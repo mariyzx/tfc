@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import TeamService from '../services/Team.service';
+import { ITeamService } from '../interfaces/services/TeamService.interface';
 
 export default class TeamController {
-  constructor(private teamService = new TeamService()) {}
+  constructor(private teamService: ITeamService) {}
 
-  getAll = async (req: Request, res: Response) => {
-    const teams = await this.teamService.getAllTeams();
+  getAll = async (_req: Request, res: Response) => {
+    const teams = await this.teamService.getAllTeams()
 
     return res.status(200).json(teams);
   };

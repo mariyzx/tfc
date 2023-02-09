@@ -1,8 +1,9 @@
 import { jwtGen, verify } from '../helpers/utils/jwt';
 import UserModel from '../database/models/User';
-import { ICredentials, IRole, IVerify } from '../interfaces/ILogin';
+import { ICredentials, ILoginResponse, IRole, IVerify } from '../interfaces/ILogin';
 import passValidate from '../helpers/validations/passValidate';
 import { ILoginRepository } from '../interfaces/repositories/ILoginRepository';
+import { IError } from '../interfaces/IError';
 
 export default class LoginService {
   // Injeção de dependência, não depende da implementação, apenas da abstração.
@@ -11,7 +12,7 @@ export default class LoginService {
   ) {}
 
   // realiza o login do usuário caso as credenciais estejam corretas;
-  async login(cred: ICredentials) {
+  async login(cred: ICredentials): Promise<ILoginResponse | IError> {
     // o usuário precisa existir;
     const user = await this.loginRepository.getUser(cred.email);
 
@@ -23,11 +24,11 @@ export default class LoginService {
     const { id, email, role, username } = user;
     const token = jwtGen({ id, email, role, username }); // gera o token com as informações o usuário
 
-    return { status: 200, data: { user: { id, email, role, username }, token } };
+    return { status: 200, data: { id, email, role, username, token } };
   }
 
   // valida o token de determinado usuário;
-  async validate(token: string) {
+  async validate(token: string): Promise<ILoginResponse | IError> {
     try {
       // precisa ser tipo IVerify para retornar o email;
       // se falhar vai pro catch
