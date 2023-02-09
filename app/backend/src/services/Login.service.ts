@@ -27,7 +27,7 @@ export default class LoginService {
   }
 
   // valida o token de determinado usuário;
-  validate = async (token: string) => {
+  async validate(token: string) {
     try {
       // precisa ser tipo IVerify para retornar o email;
       // se falhar vai pro catch

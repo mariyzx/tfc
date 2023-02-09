@@ -12,7 +12,7 @@ export interface IUser {
 }
 
 export interface IVerify {
-  email: string
+  email: string;
 }
 
 export interface IToken {
@@ -23,5 +23,18 @@ export interface IToken {
 }
 
 export interface IRole {
-  role: string,
+  role: string;
+}
+
+export interface IData {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+  token: string;
+}
+
+export interface ILoginResponse {
+  status: number;
+  data: IData;
 }

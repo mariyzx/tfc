@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import LoginService from '../services/Login.service';
+import { ILoginService } from '../interfaces/services/LoginService.interface';
 
 export default class LoginController {
   // Dependency Inversion Principle
-  constructor(private loginService = new LoginService()) {}
+  constructor(private loginService: ILoginService) {}
 
   login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
