@@ -12,10 +12,8 @@ export default class TeamController {
 
   getById = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const team = await this.teamService.getTeamsById(Number(id));
+    const { status, data} = await this.teamService.getTeamsById(Number(id));
 
-    if (!team) return res.status(400).json({ message: 'Team not found!' });
-
-    return res.status(200).json(team);
+    return res.status(status).json(data);
   };
 }

@@ -11,12 +11,12 @@ export default class TeamService {
     return teams;
   }
 
-  async getTeamsById(id: number): Promise<ITeam | null> {
+  async getTeamsById(id: number) {
     // busca o time com id específico
     const team = await this.teamModel.findByPk(id);
     // se não encontrar retorna null;
-    if (!team) return null;
+    if (!team) return { status: 400, data: { message: 'Team not found!'} };
 
-    return team;
+    return { status: 200, data: team };
   }
 }

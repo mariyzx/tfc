@@ -4,6 +4,7 @@ import UserModel from '../database/models/User';
 import { ICredentials, IRole, IVerify } from '../interfaces/ILogin';
 
 export default class LoginService {
+  // Injeção de dependência, não depende da implementação, apenas da abstração.
   constructor(
     readonly userModel = UserModel,
   ) {}
@@ -12,12 +13,11 @@ export default class LoginService {
   async login(cred: ICredentials) {
     // o usuário precisa existir;
     const user = await this.userModel.findOne({ where: { email: cred.email } });
-    // se nao existir retorna erro;
     if (!user) return { status: 401, data: { message: 'Incorrect email or password' } };
-    // se existir precisa comparar as senhas;
+
     const pass = await bcrypt.compareSync(cred.password, user.password);
-    // se a senha for diferente retorna erro;
     if (!pass) return { status: 401, data: { message: 'Incorrect email or password' } };
+    
     // se a senha for igual precisa retornar o token:
     const { id, email, role, username } = user;
     const token = jwtGen({ id, email, role, username }); // gera o token com as informações o usuário
@@ -26,18 +26,20 @@ export default class LoginService {
   }
 
   // valida o token de determinado usuário;
-  validate = async (token: string): Promise<IRole | undefined> => {
+  validate = async (token: string) => {
     try {
       // precisa ser tipo IVerify para retornar o email;
+      // se falhar vai pro catch
       const { email } = (<IVerify>verify(token));
-      const user = await UserModel.findOne({ where: { email } });
+      const user = await this.userModel.findOne({ where: { email } });
 
-      if (!user) return undefined;
+      if (!user) return { status: 404, data: { message: 'User not found!' } };
 
       const { role } = user;
-      return { role };
+      return { status: 200, data: { message: role } };
     } catch (err) {
-      return undefined;
+      // só entra no catch quando falha na linha 33
+      return { status: 401, data: { message: 'Invalid token!' } };
     }
   };
 }
