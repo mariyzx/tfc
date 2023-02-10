@@ -20,12 +20,11 @@ export default class LoginController {
 
   validate = async (req: Request, res: Response) => {
     const { authorization } = req.headers;
-    // se não tiver o token retorna erro
+
     if (!authorization) return res.status(400).json({ message: 'Token not found!' });
-    // verifica se existe usuário com esse token
+
     const { status, data } = await this.loginService.validate(authorization);
-    // se não existir retorna erro
-    // se existir retorna o usuário;
+
     return res.status(status).json(data);
   };
 }

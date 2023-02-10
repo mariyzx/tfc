@@ -7,7 +7,8 @@ export default class MatchesController {
   getAllMatches = async (req: Request, res: Response) => {
     const { inProgress } = req.query;
 
-    const { status, data } = await this.matchesService.getMatches(inProgress as string);
+    const { status, data } = await this.matchesService
+      .getMatches(inProgress as string);
 
     return res.status(status).json(data);
   };
@@ -41,7 +42,7 @@ export default class MatchesController {
     }
 
     const { status, data } = await this.matchesService.updateResult(
-      {homeTeamGoals, awayTeamGoals}, Number(id)
+      { homeTeamGoals, awayTeamGoals }, Number(id)
     );
 
     return res.status(status).json(data);

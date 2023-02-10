@@ -12,7 +12,7 @@ export interface IUser {
 }
 
 export interface IVerify {
-  email: string;
+  role: string;
 }
 
 export interface IToken {

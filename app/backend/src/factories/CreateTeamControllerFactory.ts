@@ -5,10 +5,10 @@ import TeamService from "../services/Team.service";
 export class CreateTeamControllerFactory {
   // monta a instância do controller
   static make() {
-    const repository = new TeamRepository
-    const service = new TeamService(repository)
+    const repository = new TeamRepository;
+    const service = new TeamService(repository);
     const teamController = new TeamController(service);
 
-    return teamController
+    return teamController;
   }
 }
