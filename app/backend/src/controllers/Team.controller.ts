@@ -5,9 +5,9 @@ export default class TeamController {
   constructor(private teamService: ITeamService) {}
 
   getAll = async (_req: Request, res: Response) => {
-    const teams = await this.teamService.getAllTeams()
+    const { status, data } = await this.teamService.getAllTeams()
 
-    return res.status(200).json(teams);
+    return res.status(status).json(data);
   };
 
   getById = async (req: Request, res: Response) => {
