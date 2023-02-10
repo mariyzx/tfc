@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import TeamController from '../controllers/Team.controller';
+import { CreateTeamControllerFactory } from '../factories/CreateTeamControllerFactory';
 
 const router = Router();
 
-const teamController = new TeamController();
+const teamController = CreateTeamControllerFactory.make()
 
 router.get('/', (req, res) => teamController.getAll(req, res));
 router.get('/:id', (req, res) => teamController.getById(req, res));

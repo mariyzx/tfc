@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import LeaderboardController from '../controllers/Leaderboard.controller';
+import { CreateLeaderboardControllerFactory } from '../factories/CreateLeaderboardControllerFactory';
 
 const router = Router();
 
-const leaderboardController = new LeaderboardController();
+const leaderboardController = CreateLeaderboardControllerFactory.make()
 
 router.get('/home', (req, res) => leaderboardController.getHome(req, res));
 router.get('/away', (req, res) => leaderboardController.getAway(req, res));

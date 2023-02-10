@@ -3,8 +3,16 @@ export interface ICredentials {
   password: string;
 }
 
+export interface IUser {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+  password: string;
+}
+
 export interface IVerify {
-  email: string
+  role: string;
 }
 
 export interface IToken {
@@ -15,5 +23,18 @@ export interface IToken {
 }
 
 export interface IRole {
-  role: string,
+  role: string;
+}
+
+export interface IData {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+  token: string;
+}
+
+export interface ILoginResponse {
+  status: number;
+  data: IData;
 }

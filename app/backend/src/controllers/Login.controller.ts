@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
-import LoginService from '../services/Login.service';
+import { ILoginResponse } from '../interfaces/ILogin';
+import { ILoginService } from '../interfaces/services/LoginService.interface';
 
 export default class LoginController {
   // Dependency Inversion Principle
-  constructor(private loginService = new LoginService()) {}
+  constructor(private loginService: ILoginService) {}
 
   login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
@@ -19,12 +20,11 @@ export default class LoginController {
 
   validate = async (req: Request, res: Response) => {
     const { authorization } = req.headers;
-    // se não tiver o token retorna erro
+
     if (!authorization) return res.status(400).json({ message: 'Token not found!' });
-    // verifica se existe usuário com esse token
+
     const { status, data } = await this.loginService.validate(authorization);
-    // se não existir retorna erro
-    // se existir retorna o usuário;
+
     return res.status(status).json(data);
   };
 }
