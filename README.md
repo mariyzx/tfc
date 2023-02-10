@@ -8,7 +8,7 @@ Nesse projeto foi desenvolvida uma API para um site informativo de partidas e cl
 
 Essas instruções permitirão que você obtenha uma cópia do projeto em operação na sua máquina local para fins de desenvolvimento e teste.
 
-Consulte **[Instalação](#🔧-instalação)** para saber como rodar o projeto.
+Consulte **[Instalação](#instalacao)** para saber como rodar o projeto.
 
 ### 📋 Pré-requisitos
 
@@ -18,7 +18,7 @@ Consulte **[Instalação](#🔧-instalação)** para saber como rodar o projeto.
   ``Node``
   > O projeto espera que sua versão do node seja a 16.
 
-## 🔧 Instalação
+## 🔧 Instalação {#instalacao}
 
 
 Clone o repositório:
