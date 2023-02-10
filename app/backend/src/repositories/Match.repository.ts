@@ -20,7 +20,7 @@ export class MatchRepository implements IMatchRepository {
     return matches;
   }
 
-  async getMatchesInProgress(status: boolean): Promise<IMatch[]> {
+  async getMatchesInProgress(): Promise<IMatch[]> {
     const matches = await MatchesModel.findAll({
       include: [{
         model: TeamModel,
@@ -31,7 +31,24 @@ export class MatchRepository implements IMatchRepository {
         as: 'teamAway',
         attributes: { exclude: ['id'] } },
       ],
-      where: { inProgress: status }
+      where: { inProgress: true }
+    });
+
+    return matches;
+  }
+
+  async getMatchesFinished(): Promise<IMatch[]> {
+    const matches = await MatchesModel.findAll({
+      include: [{
+        model: TeamModel,
+        as: 'teamHome',
+        attributes: { exclude: ['id'] },
+      },
+      { model: TeamModel,
+        as: 'teamAway',
+        attributes: { exclude: ['id'] } },
+      ],
+      where: { inProgress: false }
     });
 
     return matches;

@@ -8,8 +8,11 @@ export default class MatchesService {
     // pega todas as partidas do banco, incluindo as colunas 'teamHome' e 'teamAway';
     const matches = await this.matchesModel.getMatches();
 
-    if (inProgress) {
-      const matchesProgress = matches.filter((match) => match.inProgress);
+    if (inProgress === 'true') {
+      const matchesProgress = await this.matchesModel.getMatchesInProgress();
+      return { status: 200, data: matchesProgress }
+    } if (inProgress === 'false') {
+      const matchesProgress = await this.matchesModel.getMatchesFinished();
       return { status: 200, data: matchesProgress }
     }
 

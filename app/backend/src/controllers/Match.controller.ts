@@ -7,9 +7,9 @@ export default class MatchesController {
   getAllMatches = async (req: Request, res: Response) => {
     const { inProgress } = req.query;
 
-    const matches = await this.matchesService.getMatches(inProgress as string);
+    const { status, data } = await this.matchesService.getMatches(inProgress as string);
 
-    return res.status(200).json(matches);
+    return res.status(status).json(data);
   };
 
   saveMatch = async (req: Request, res: Response) => {

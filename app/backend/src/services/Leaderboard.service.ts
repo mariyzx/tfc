@@ -15,7 +15,7 @@ export default class LeaderboardService {
     // essa função auxilia no retorno das partidas de determinado time de acordo
     // com o seu tipo
     let teamsMatches;
-    const allMatches = await this.matchesModel.getMatchesInProgress(false);
+    const allMatches = await this.matchesModel.getMatchesFinished();
 
     if (type === 'home') {
       teamsMatches = allMatches.filter((mt) => mt.homeTeam === team.id);

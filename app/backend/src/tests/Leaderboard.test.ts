@@ -2,7 +2,6 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
-import * as bcryptjs from 'bcryptjs';
 import App from '../app';
 
 import { Response } from 'superagent';
