@@ -5,7 +5,6 @@ import { ILoginRepository } from '../interfaces/repositories/ILoginRepository';
 import { IError } from '../interfaces/IError';
 
 export default class LoginService {
-  // Injeção de dependência, não depende da implementação, apenas da abstração.
   constructor(
     readonly loginRepository: ILoginRepository,
   ) {}
